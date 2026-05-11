@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Quiz App</title>
+
+  <style>
+    body {
+      font-family: Arial;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .box {
+      background: rgba(0,0,0,0.5);
+      padding: 20px;
+      border-radius: 10px;
+      width: 320px;
+      margin: auto;
+    }
+
+    button {
+      margin: 8px 0;
+      padding: 10px;
+      width: 100%;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: 0.3s;
+      font-size: 15px;
+    }
+
+    button:hover {
+      transform: scale(1.05);
+    }
+
+    .correct {
+      background: green !important;
+      color: white;
+    }
+
+    .wrong {
+      background: red !important;
+      color: white;
+    }
+  </style>
+</head>
+
+<body>
+
+<h1>Quiz Game 🎯</h1>
+
+<div class="box">
+  <h3 id="question"></h3>
+
+  <button onclick="check(0)" id="opt0"></button>
+  <button onclick="check(1)" id="opt1"></button>
+  <button onclick="check(2)" id="opt2"></button>
+  <button onclick="check(3)" id="opt3"></button>
+
+  <h3 id="result"></h3>
+</div>
+
+<script>
+  const quiz = [
+    {
+      q: "Which language is used for web development?",
+      options: ["Python", "Java", "HTML", "C++"],
+      ans: 2
+    },
+    {
+      q: "Which company developed Java?",
+      options: ["Microsoft", "Sun Microsystems", "Google", "Apple"],
+      ans: 1
+    },
+    {
+      q: "Which tag is used to create a hyperlink in HTML?",
+      options: ["<link>", "<a>", "<href>", "<url>"],
+      ans: 1
+    },
+    {
+      q: "Which data structure uses FIFO?",
+      options: ["Stack", "Queue", "Tree", "Graph"],
+      ans: 1
+    },
+    {
+      q: "Which keyword is used in Java to inherit a class?",
+      options: ["this", "super", "extends", "implements"],
+      ans: 2
+    }
+  ];
+
+  let current = 0;
+  let score = 0;
+
+  function load() {
+    let q = quiz[current];
+    document.getElementById("question").innerText = q.q;
+
+    for (let i = 0; i < 4; i++) {
+      let btn = document.getElementById("opt" + i);
+      btn.innerText = q.options[i];
+      btn.classList.remove("correct", "wrong");
+      btn.disabled = false;
+    }
+  }
+
+  function check(i) {
+    let correct = quiz[current].ans;
+
+    for (let j = 0; j < 4; j++) {
+      let btn = document.getElementById("opt" + j);
+      btn.disabled = true;
+
+      if (j === correct) {
+        btn.classList.add("correct");
+      } else if (j === i) {
+        btn.classList.add("wrong");
+      }
+    }
+
+    if (i === correct) {
+      score++;
+    }
+
+    setTimeout(() => {
+      current++;
+
+      if (current < quiz.length) {
+        load();
+      } else {
+        document.querySelector(".box").innerHTML =
+          "<h2>Score: " + score + "/" + quiz.length + "</h2>";
+      }
+    }, 1000);
+  }
+
+  load();
+</script>
+
+</body>
+</html>
